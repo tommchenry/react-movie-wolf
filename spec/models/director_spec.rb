@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: directors
+#
+#  id   :bigint           not null, primary key
+#  name :string
+#
+
 require 'rails_helper'
 
 RSpec.describe Director, type: :model do

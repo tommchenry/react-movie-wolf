@@ -46,14 +46,14 @@ class App extends Component {
           ? <Item.Group divided>
             {Object.keys(movies).map((key) => {
               return <Item>
-                <Item.Image src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                <Item.Image src={movies[key].image_url} />
                 <Item.Content>
                   <Item.Header as='a'>{movies[key].title}</Item.Header>
                   <Item.Meta>
                     <span>{movies[key].year}</span>
                   </Item.Meta>
                   <Item.Description>
-                    A description which may flow for several lines and give context to the content.
+                    <span>{movies[key].description}</span>
                   </Item.Description>
                 </Item.Content>
                 </Item>
