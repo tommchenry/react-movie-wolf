@@ -14,7 +14,10 @@
 class Movie < ApplicationRecord
   has_and_belongs_to_many :directors
 
+  after_create :get_api_info
+
   def get_api_info
+    return unless title && year
     search_query = URI::encode(title)
     url = "https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&language=en-US&query=#{search_query}&page=1&include_adult=false&year=#{year}"
     response = HTTParty.get(url)
