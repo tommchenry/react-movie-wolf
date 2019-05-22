@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Header, Segment, Button, Icon, Dimmer, Loader, Divider } from 'semantic-ui-react'
+import { Container, Header, Segment, Button, Icon, Image, Dimmer, Loader, Divider } from 'semantic-ui-react'
 
 class App extends Component {
   constructor () {
@@ -40,15 +40,10 @@ class App extends Component {
     let {movies, movie} = this.state
     return movies
       ? <Container text>
-        <Header as='h2' icon textAlign='center' color='teal'>
-          <Icon name='unordered list' circular />
-          <Header.Content>
-            List of Directors
-          </Header.Content>
-        </Header>
+        <Image src='https://s3.amazonaws.com/movie-wolf/MovieWolfLogo.png' size='medium' centered />
         <Divider hidden section />
         {movies && movies.length
-          ? <Button.Group color='teal' fluid widths={movies.length}>
+          ? <Button.Group color='red' fluid widths={movies.length}>
             {Object.keys(movies).map((key) => {
               return <Button active={movie && movie.id === movies[key].id} fluid key={key} onClick={() => this.getMovie(movies[key].id)}>
                 {movies[key].title}
@@ -68,7 +63,7 @@ class App extends Component {
               </Segment.Group>
             }
             {movie.steps && <p>{movie.steps}</p>}
-            {movie.source && <Button basic size='tiny' color='teal' href={movie.source}>Source</Button>}
+            {movie.source && <Button basic size='tiny' color='red' href={movie.source}>Source</Button>}
           </Container>
         }
       </Container>
