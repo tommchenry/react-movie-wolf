@@ -22,6 +22,7 @@ class Movie < ApplicationRecord
     url = "https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&language=en-US&query=#{search_query}&page=1&include_adult=false&year=#{year}"
     response = HTTParty.get(url)
     movie_response = find_movie(response)
+    return if movie_response.nil?
     self.image_url = "https://image.tmdb.org/t/p/w500" + movie_response["poster_path"]
     self.title = movie_response["title"]
     self.description = movie_response["overview"]
@@ -47,6 +48,7 @@ class Movie < ApplicationRecord
    end
 
    def find_movie(response)
+     return if response["results"].nil?
      results_by_year = response["results"].select do |result|
        result["release_date"][0..3] == year.to_s
      end
