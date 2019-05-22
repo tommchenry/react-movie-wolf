@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Header, Segment, Button, Icon, Image, Dimmer, Loader, Divider } from 'semantic-ui-react'
+import { Container, Image, Item, Dimmer, Loader, Divider } from 'semantic-ui-react'
 
 class App extends Component {
   constructor () {
@@ -43,28 +43,23 @@ class App extends Component {
         <Image src='https://s3.amazonaws.com/movie-wolf/MovieWolfLogo.png' size='medium' centered />
         <Divider hidden section />
         {movies && movies.length
-          ? <Button.Group color='red' fluid widths={movies.length}>
+          ? <Item.Group divided>
             {Object.keys(movies).map((key) => {
-              return <Button active={movie && movie.id === movies[key].id} fluid key={key} onClick={() => this.getMovie(movies[key].id)}>
-                {movies[key].title}
-              </Button>
+              return <Item>
+                <Item.Image src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                <Item.Content>
+                  <Item.Header as='a'>{movies[key].title}</Item.Header>
+                  <Item.Meta>
+                    <span>{movies[key].year}</span>
+                  </Item.Meta>
+                  <Item.Description>
+                    A description which may flow for several lines and give context to the content.
+                  </Item.Description>
+                </Item.Content>
+                </Item>
             })}
-          </Button.Group>
+          </Item.Group>
           : <Container textAlign='center'>No movies found.</Container>
-        }
-        <Divider section />
-        {movie &&
-          <Container>
-            <Header as='h2'>{movie.title}</Header>
-            {movie.description && <p>{movie.description}</p>}
-            {movie.directors &&
-              <Segment.Group>
-                {movie.directors.map((director, i) => <Segment key={i}>{director.name}</Segment>)}
-              </Segment.Group>
-            }
-            {movie.steps && <p>{movie.steps}</p>}
-            {movie.source && <Button basic size='tiny' color='red' href={movie.source}>Source</Button>}
-          </Container>
         }
       </Container>
       : <Container text>
