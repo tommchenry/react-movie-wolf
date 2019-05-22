@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: movies
+#
+#  id           :bigint           not null, primary key
+#  title        :string
+#  year         :integer
+#  is_owned     :boolean
+#  image_url    :string
+#  description  :string
+#  movie_api_id :integer
+#
+
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
