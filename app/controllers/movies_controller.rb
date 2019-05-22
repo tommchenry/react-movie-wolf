@@ -2,7 +2,7 @@ class MoviesController < ApiController
 
   # GET /movies
   def index
-    @movies = Movie.all
+    @movies = Movie.all.sort_by(&:title)
     render json: @movies.to_json
   end
 
