@@ -27,4 +27,4 @@
 /public
 node_modules
 
-.env
+/.env
