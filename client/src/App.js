@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Image, Item, Dimmer, Loader, Divider } from 'semantic-ui-react'
+import { Container, Button, Image, Item, Dimmer, Loader, Divider } from 'semantic-ui-react'
 
 class App extends Component {
   constructor () {
@@ -24,7 +24,17 @@ class App extends Component {
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})
-          this.getMovie(movies[0].id)
+        } else {
+          this.setState({movies: []})
+        }
+      })
+  }
+
+  getSortedMovies (sort) {
+    this.fetch(`/api/movies?sort=${sort}`)
+      .then(movies => {
+        if (movies.length) {
+          this.setState({movies: movies})
         } else {
           this.setState({movies: []})
         }
@@ -37,10 +47,15 @@ class App extends Component {
   }
 
   render () {
-    let {movies, movie} = this.state
+    let {movies} = this.state
     return movies
       ? <Container text>
         <Image src='https://s3.amazonaws.com/movie-wolf/MovieWolfLogo.png' size='medium' centered />
+        <Button.Group color='red' fluid>
+          <Button onClick={() => this.getMovies()}>Alphabetical</Button>
+          <Button onClick={() => this.getSortedMovies("chrono")}>Chronological</Button>
+          <Button onClick={() => this.getSortedMovies("chrono-rev")}>Reverse Chronological</Button>
+        </Button.Group>
         <Divider hidden section />
         {movies && movies.length
           ? <Item.Group divided>

@@ -1,10 +1,22 @@
 class MovieQuery
+  attr_reader :params
+
   def initialize(params)
     @params = params
   end
 
   def query_results
-    alphabetical_by_title(Movie.all)
+    if params[:sort] == "chrono"
+      chronological_by_year(Movie.all)
+    elsif params[:sort] == "chrono-rev"
+      chronological_by_year(Movie.all).reverse
+    else
+      alphabetical_by_title(Movie.all)
+    end
+  end
+
+  def chronological_by_year(collection)
+    collection.sort_by(&:year)
   end
 
   def alphabetical_by_title(collection)
