@@ -8,6 +8,11 @@ ActiveAdmin.register Movie do
                 :movie_api_id,
                 tag_ids: []
 
+  filter :title
+  filter :year
+  filter :is_owned
+  filter :description
+
   form do |f| 
     f.inputs 'Required' do
       f.input :title, required: true, hint: "Please enter a title"
