@@ -3,11 +3,11 @@
 # Table name: movies
 #
 #  id           :bigint           not null, primary key
+#  description  :string
+#  image_url    :string
+#  is_owned     :boolean
 #  title        :string
 #  year         :integer
-#  is_owned     :boolean
-#  image_url    :string
-#  description  :string
 #  movie_api_id :integer
 #
 
