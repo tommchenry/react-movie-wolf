@@ -3,7 +3,6 @@
 #   postgres://user:password@host:port/dbname
 # we recommend a command which outputs a database URL
 # so sensitive information is not included in this file
-# TODO:
 # heroku pg:credentials:url DATABASE grab Connection URL
 from: $(some_command)
 
