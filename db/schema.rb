@@ -72,4 +72,6 @@ ActiveRecord::Schema.define(version: 2019_05_24_005439) do
     t.string "name", null: false
   end
 
+  add_foreign_key "movies_tags", "movies"
+  add_foreign_key "movies_tags", "tags"
 end

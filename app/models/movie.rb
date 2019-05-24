@@ -13,7 +13,9 @@
 
 class Movie < ApplicationRecord
   has_and_belongs_to_many :directors
-  has_and_belongs_to_many :tags
+
+  has_many :movies_tags
+  has_many :tags, through: :movies_tags
 
   after_create :get_api_info
 

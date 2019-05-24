@@ -1,3 +1,4 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :movies 
+  has_many :movies_tags
+  has_many :movies, through: :movies_tags
 end
