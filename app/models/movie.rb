@@ -3,16 +3,19 @@
 # Table name: movies
 #
 #  id           :bigint           not null, primary key
+#  description  :string
+#  image_url    :string
+#  is_owned     :boolean
 #  title        :string
 #  year         :integer
-#  is_owned     :boolean
-#  image_url    :string
-#  description  :string
 #  movie_api_id :integer
 #
 
 class Movie < ApplicationRecord
   has_and_belongs_to_many :directors
+
+  has_many :movies_tags
+  has_many :tags, through: :movies_tags
 
   after_create :get_api_info
 
