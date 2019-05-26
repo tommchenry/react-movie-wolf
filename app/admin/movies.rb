@@ -8,10 +8,21 @@ ActiveAdmin.register Movie do
                 :movie_api_id,
                 tag_ids: []
 
-  filter :title
-  filter :year
-  filter :is_owned
-  filter :description
+  index do |movie|
+      column :title
+      column :year
+      column "Director" do |movie|
+        movie.directors
+      end
+      column "Image" do |movie|
+        link_to image_tag(movie.image_url, height: 100), admin_movie_path(movie)
+      end
+      column :is_owned
+      column "Tags" do |movie|
+        movie.tags
+      end
+      actions
+  end
 
   form do |f| 
     f.inputs 'Required' do

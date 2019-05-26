@@ -2,6 +2,7 @@
 #
 # Table name: movies_tags
 #
+#  id       :bigint           not null, primary key
 #  movie_id :bigint           not null
 #  tag_id   :bigint           not null
 #
