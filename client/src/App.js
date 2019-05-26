@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Button, Image, Item, Dimmer, Loader, Divider } from 'semantic-ui-react'
+import { Container, Button, Image, Item, Label, Dimmer, Loader, Divider } from 'semantic-ui-react'
 
 class App extends Component {
   constructor () {
@@ -67,9 +67,11 @@ class App extends Component {
                   <Item.Meta>
                     <span>{movies[key].year}</span>
                   </Item.Meta>
-                  <Item.Description>
-                    <span>{movies[key].description}</span>
-                  </Item.Description>
+                <MovieDescription description={movies[key].description} />
+                <Divider hidden section />
+                <div>
+                  <MovieTagList tags={movies[key].tags} />
+                </div>
                 </Item.Content>
                 </Item>
             })}
@@ -82,6 +84,47 @@ class App extends Component {
           <Loader content='Loading' />
         </Dimmer>
       </Container>
+  }
+}
+
+class MovieDescription extends Component {
+  render() {
+    return(
+      <Item.Description>
+      <span>{this.props.description}</span>
+      </Item.Description>
+    );
+  }
+}
+
+class MovieTagList extends Component {
+  render() {
+    let tags = this.props.tags;
+    return tags.length 
+      ? 
+      tags.map((tag) => {
+         return <MovieTag key={tag.id.toString()}
+                      value={tag.name} />
+      })
+      : ""
+  }
+}
+
+
+class MovieTag extends Component {
+  filterMovies(tag) {
+    this.fetch(`/api/movies?tag=${tag}`)
+      .then(movies => {
+        if (movies.length) {
+          this.setState({movies: movies})
+        } else {
+          this.setState({movies: []})
+        }
+      })
+  }
+
+  render() {
+    return <Label as='a' color="red" tag>{this.props.value}</Label>
   }
 }
 
