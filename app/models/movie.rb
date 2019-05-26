@@ -34,28 +34,34 @@ class Movie < ApplicationRecord
     self.save!
   end
 
-  def get_director(movie_api_id)
-    # url = "https://api.themoviedb.org/3/movie/#{movie_api_id}?api_key=#{api_key}&append_to_response=credits"
-    # response = HTTParty.get(url)
-    # response["credits"]["crew"].each do |crew|
-    #   if crew["job"] == "Director"
-    #     director = create_director(crew)
-    #     self.directors << director
-    #   end
-    # end
+  def get_director
+    url = "https://api.themoviedb.org/3/movie/#{movie_api_id}?api_key=#{api_key}&append_to_response=credits"
+    response = HTTParty.get(url)
+    response["credits"]["crew"].each do |crew|
+      if crew["job"] == "Director"
+        director = create_director(crew)
+        self.directors << director unless self.directors.include?(director)
+      end
+    end
   end
 
   private
 
-   def api_key
-     ENV.fetch("MOVIE_DB_API_KEY")
-   end
+  def create_director(crew)
+    name = crew["name"]
+    api_id = crew["id"]
+    Director.find_or_create_by(name: name, api_id: api_id)
+  end
 
-   def find_movie(response)
-     return if response["results"].nil?
-     results_by_year = response["results"].select do |result|
-       result["release_date"][0..3] == year.to_s
-     end
-     results_by_year.first
-   end
+  def api_key
+    ENV.fetch("MOVIE_DB_API_KEY")
+  end
+
+  def find_movie(response)
+    return if response["results"].nil?
+    results_by_year = response["results"].select do |result|
+      result["release_date"][0..3] == year.to_s
+    end
+    results_by_year.first
+  end
 end
