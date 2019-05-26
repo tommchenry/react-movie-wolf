@@ -9,19 +9,20 @@ ActiveAdmin.register Movie do
                 tag_ids: []
 
   index do |movie|
-      column :title
-      column :year
-      column "Director" do |movie|
-        movie.directors
-      end
-      column "Image" do |movie|
-        link_to image_tag(movie.image_url, height: 100), admin_movie_path(movie)
-      end
-      column :is_owned
-      column "Tags" do |movie|
-        movie.tags
-      end
-      actions
+    column :id
+    column :title
+    column :year
+    column "Director" do |movie|
+      movie.directors
+    end
+    column "Image" do |movie|
+      link_to image_tag(movie.image_url, height: 100), admin_movie_path(movie)
+    end
+    column :is_owned
+    column "Tags" do |movie|
+      movie.tags
+    end
+    actions
   end
 
   form do |f| 

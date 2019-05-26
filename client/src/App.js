@@ -78,6 +78,11 @@ class App extends Component {
                   <Item.Header>{movies[key].title}</Item.Header>
                   <Item.Meta>
                     <span>{movies[key].year}</span>
+                      {movies[key].directors.length > 0 && 
+                        movies[key].directors.map((director) => {
+                          return <Label key={director.id.toString()} as='a' color="orange">{director.name}</Label>
+                        })
+                      }
                   </Item.Meta>
                 <MovieDescription description={movies[key].description} />
                 <Divider hidden section />

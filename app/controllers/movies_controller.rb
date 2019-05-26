@@ -3,7 +3,7 @@ class MoviesController < ApiController
   # GET /movies
   def index
     @movies = sorted_and_filtered_movies(params)
-    render :json => @movies, :include => {:tags => {:only => [:id, :name]}}, :except => [:created_at, :updated_at]
+    render :json => @movies, :include => {:tags => {:only => [:id, :name]}, :directors => {:only => [:id, :name]}}, :except => [:created_at, :updated_at]
   end
 
   # GET /movies/:id
