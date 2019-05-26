@@ -7,11 +7,20 @@ class MovieQuery
 
   def query_results
     if params[:sort] == "chrono"
-      chronological_by_year(Movie.all)
+      chronological_by_year(filtered_collection)
     elsif params[:sort] == "chrono-rev"
-      chronological_by_year(Movie.all).reverse
+      chronological_by_year(filtered_collection).reverse
     else
-      alphabetical_by_title(Movie.all)
+      alphabetical_by_title(filtered_collection)
+    end
+  end
+
+  def filtered_collection
+    if params[:tag]
+      tag_id = Tag.find_by(name: params[:tag]).id
+      Movie.all.joins(:tags).where("tags.id = ?", tag_id)
+    else
+      Movie.all
     end
   end
 

@@ -57,5 +57,25 @@ RSpec.describe MovieQuery do
         expect(query.query_results).to eq(reverse_chronological_order)
       end
     end
+
+    context "when a tag is provided" do
+      let(:params) {{tag: "giallo"}}
+
+      it "returns only movies with that tag" do
+        movie_3 = Movie.create(title: "Deep Red")
+        movie_2 = Movie.create(title: "Raising Arizona")
+        movie_1 = Movie.create(title: "Suspiria")
+        tag = Tag.create(name: "giallo")
+        movie_3.tags << tag
+        movie_1.tags << tag
+
+        query = MovieQuery.new(params)
+
+        expect(query.query_results).to include(movie_1)
+        expect(query.query_results).to include(movie_3)
+        expect(query.query_results).not_to include(movie_2)
+      end
+    end
+
   end
 end
