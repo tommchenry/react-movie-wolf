@@ -8,6 +8,7 @@ class App extends Component {
     this.getMovies = this.getMovies.bind(this)
     this.getMovie = this.getMovie.bind(this)
     this.getFilteredMovies = this.getFilteredMovies.bind(this)
+    this.getDirectorMovies = this.getDirectorMovies.bind(this)
   }
 
   componentDidMount () {
@@ -22,6 +23,17 @@ class App extends Component {
 
   getFilteredMovies(tag) {
     this.fetch(`/api/movies?tag=${tag}`)
+      .then(movies => {
+        if (movies.length) {
+          this.setState({movies: movies})
+        } else {
+          this.setState({movies: []})
+        }
+      })
+  }
+
+  getDirectorMovies(director_id) {
+    this.fetch(`/api/movies?director=${director_id}`)
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})
@@ -80,7 +92,7 @@ class App extends Component {
                     <span>{movies[key].year}</span>
                       {movies[key].directors.length > 0 && 
                         movies[key].directors.map((director) => {
-                          return <Label key={director.id.toString()} as='a' color="orange">{director.name}</Label>
+                          return <Label onClick={() => this.getDirectorMovies(director.id)} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
                         })
                       }
                   </Item.Meta>
