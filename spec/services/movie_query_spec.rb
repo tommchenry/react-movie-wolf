@@ -77,5 +77,21 @@ RSpec.describe MovieQuery do
       end
     end
 
+    context "when a director is provided" do
+      it "returns only movies with that tag" do
+        movie_3 = Movie.create(title: "Heat")
+        movie_2 = Movie.create(title: "Bad Boys")
+        movie_1 = Movie.create(title: "Miami Vice")
+        director = Director.create(name: "Michael Mann")
+        movie_3.directors << director
+        movie_1.directors << director
+
+        query = MovieQuery.new({director: director.id})
+
+        expect(query.query_results).to include(movie_1)
+        expect(query.query_results).to include(movie_3)
+        expect(query.query_results).not_to include(movie_2)
+      end
+    end
   end
 end

@@ -19,6 +19,9 @@ class MovieQuery
     if params[:tag]
       tag_id = Tag.find_by(name: params[:tag]).id
       Movie.all.joins(:tags).where("tags.id = ?", tag_id)
+    elsif params[:director]
+      director_id = params[:director]
+      Movie.all.joins(:directors).where("directors.id = ?", director_id)
     else
       Movie.all
     end
