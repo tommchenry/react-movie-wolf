@@ -7,6 +7,7 @@ class App extends Component {
     this.state = {}
     this.getMovies = this.getMovies.bind(this)
     this.getMovie = this.getMovie.bind(this)
+    this.getFilteredMovies = this.getFilteredMovies.bind(this)
   }
 
   componentDidMount () {
@@ -17,6 +18,17 @@ class App extends Component {
     return window.fetch(endpoint)
       .then(response => response.json())
       .catch(error => console.log(error))
+  }
+
+  getFilteredMovies(tag) {
+    this.fetch(`/api/movies?tag=${tag}`)
+      .then(movies => {
+        if (movies.length) {
+          this.setState({movies: movies})
+        } else {
+          this.setState({movies: []})
+        }
+      })
   }
 
   getMovies () {
@@ -60,18 +72,20 @@ class App extends Component {
         {movies && movies.length
           ? <Item.Group divided>
             {Object.keys(movies).map((key) => {
-              return <Item>
+              return <Item key={key}>
                 <Item.Image src={movies[key].image_url} />
                 <Item.Content>
-                  <Item.Header as='a'>{movies[key].title}</Item.Header>
+                  <Item.Header>{movies[key].title}</Item.Header>
                   <Item.Meta>
                     <span>{movies[key].year}</span>
                   </Item.Meta>
                 <MovieDescription description={movies[key].description} />
                 <Divider hidden section />
-                <div>
-                  <MovieTagList tags={movies[key].tags} />
-                </div>
+                {movies[key].tags.length > 0 && 
+                  movies[key].tags.map((tag) => {
+                    return <Label onClick={() => this.getFilteredMovies(tag.name)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
+                  })
+                }
                 </Item.Content>
                 </Item>
             })}
@@ -94,37 +108,6 @@ class MovieDescription extends Component {
       <span>{this.props.description}</span>
       </Item.Description>
     );
-  }
-}
-
-class MovieTagList extends Component {
-  render() {
-    let tags = this.props.tags;
-    return tags.length 
-      ? 
-      tags.map((tag) => {
-         return <MovieTag key={tag.id.toString()}
-                      value={tag.name} />
-      })
-      : ""
-  }
-}
-
-
-class MovieTag extends Component {
-  filterMovies(tag) {
-    this.fetch(`/api/movies?tag=${tag}`)
-      .then(movies => {
-        if (movies.length) {
-          this.setState({movies: movies})
-        } else {
-          this.setState({movies: []})
-        }
-      })
-  }
-
-  render() {
-    return <Label as='a' color="red" tag>{this.props.value}</Label>
   }
 }
 
