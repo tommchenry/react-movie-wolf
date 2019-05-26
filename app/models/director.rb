@@ -18,7 +18,6 @@ class Director < ApplicationRecord
     movies = response["crew"].select do |crew|
       crew["department"] == "Directing"
     end
-    binding.pry
   end
 
   private
