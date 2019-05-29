@@ -21,8 +21,8 @@ class App extends Component {
       .catch(error => console.log(error))
   }
 
-  getFilteredMovies(tag) {
-    this.fetch(`/api/movies?tag=${tag}`)
+  getFilteredMovies(tag_id) {
+    this.fetch(`/api/movies?tag=${tag_id}`)
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})
@@ -100,7 +100,7 @@ class App extends Component {
                 <Divider hidden section />
                 {movies[key].tags.length > 0 && 
                   movies[key].tags.map((tag) => {
-                    return <Label onClick={() => this.getFilteredMovies(tag.name)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
+                    return <Label onClick={() => this.getFilteredMovies(tag.id)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
                   })
                 }
                 </Item.Content>

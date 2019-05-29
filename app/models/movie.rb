@@ -20,6 +20,10 @@ class Movie < ApplicationRecord
 
   after_create :get_api_info
 
+  scope :filter_by_director, -> (director) { joins(:directors).where("directors.id = ?", director) }
+
+  scope :filter_by_tag, -> (tag) { joins(:tags).where("tags.id = ?",tag) }
+
   def get_api_info
     return unless title && year
     search_query = URI::encode(title)
