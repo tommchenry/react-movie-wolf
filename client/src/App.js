@@ -21,8 +21,8 @@ class App extends Component {
       .catch(error => console.log(error))
   }
 
-  getFilteredMovies(tag) {
-    this.fetch(`/api/movies?tag=${tag}`)
+  getFilteredMovies(tag_id) {
+    this.fetch(`/api/movies?tag=${tag_id}`)
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})
@@ -34,6 +34,17 @@ class App extends Component {
 
   getDirectorMovies(director_id) {
     this.fetch(`/api/movies?director=${director_id}`)
+      .then(movies => {
+        if (movies.length) {
+          this.setState({movies: movies})
+        } else {
+          this.setState({movies: []})
+        }
+      })
+  }
+
+  getYearMovies(year) {
+    this.fetch(`/api/movies?year=${year}`)
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})
@@ -79,6 +90,7 @@ class App extends Component {
           <Button onClick={() => this.getMovies()}>Alphabetical</Button>
           <Button onClick={() => this.getSortedMovies("chrono")}>Chronological</Button>
           <Button onClick={() => this.getSortedMovies("chrono-rev")}>Reverse Chronological</Button>
+          <Button onClick={() => this.getMovies()}>Clear Filters</Button>
         </Button.Group>
         <Divider hidden section />
         {movies && movies.length
@@ -89,7 +101,7 @@ class App extends Component {
                 <Item.Content>
                   <Item.Header>{movies[key].title}</Item.Header>
                   <Item.Meta>
-                    <span>{movies[key].year}</span>
+                    <Label onClick={() => this.getYearMovies(movies[key].year)} as='a' color="orange">{movies[key].year}</Label>
                       {movies[key].directors.length > 0 && 
                         movies[key].directors.map((director) => {
                           return <Label onClick={() => this.getDirectorMovies(director.id)} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
@@ -100,7 +112,7 @@ class App extends Component {
                 <Divider hidden section />
                 {movies[key].tags.length > 0 && 
                   movies[key].tags.map((tag) => {
-                    return <Label onClick={() => this.getFilteredMovies(tag.name)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
+                    return <Label onClick={() => this.getFilteredMovies(tag.id)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
                   })
                 }
                 </Item.Content>

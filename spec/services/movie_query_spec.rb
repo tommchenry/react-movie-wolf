@@ -59,8 +59,6 @@ RSpec.describe MovieQuery do
     end
 
     context "when a tag is provided" do
-      let(:params) {{tag: "giallo"}}
-
       it "returns only movies with that tag" do
         movie_3 = Movie.create(title: "Deep Red")
         movie_2 = Movie.create(title: "Raising Arizona")
@@ -69,7 +67,7 @@ RSpec.describe MovieQuery do
         movie_3.tags << tag
         movie_1.tags << tag
 
-        query = MovieQuery.new(params)
+        query = MovieQuery.new({tag: tag.id})
 
         expect(query.query_results).to include(movie_1)
         expect(query.query_results).to include(movie_3)
@@ -90,6 +88,26 @@ RSpec.describe MovieQuery do
 
         expect(query.query_results).to include(movie_1)
         expect(query.query_results).to include(movie_3)
+        expect(query.query_results).not_to include(movie_2)
+      end
+    end
+
+    context "when a tag and a director is provided" do
+      it "returns only movies with that tag and director" do
+        movie_3 = Movie.create(title: "Heat")
+        movie_2 = Movie.create(title: "Raising Arizona")
+        movie_1 = Movie.create(title: "Miami Vice")
+        director = Director.create(name: "Michael Mann")
+        movie_3.directors << director
+        movie_1.directors << director
+        tag = Tag.create(name: "comfort")
+        movie_3.tags << tag
+        movie_2.tags << tag
+
+        query = MovieQuery.new({director: director.id, tag: tag.id})
+
+        expect(query.query_results).to include(movie_3)
+        expect(query.query_results).not_to include(movie_1)
         expect(query.query_results).not_to include(movie_2)
       end
     end
