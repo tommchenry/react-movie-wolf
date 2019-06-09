@@ -38,6 +38,7 @@ class Movie < ApplicationRecord
     self.description = movie_response["overview"]
     self.movie_api_id = movie_response["id"]
     self.save!
+    get_director
   end
 
   def get_director
