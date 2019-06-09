@@ -3,11 +3,11 @@
 # Table name: movies
 #
 #  id           :bigint           not null, primary key
+#  description  :string
+#  image_url    :string
+#  is_owned     :boolean          default(FALSE)
 #  title        :string
 #  year         :integer
-#  is_owned     :boolean
-#  image_url    :string
-#  description  :string
 #  movie_api_id :integer
 #
 
@@ -21,10 +21,9 @@ class Movie < ApplicationRecord
   after_create :get_api_info
 
   scope :filter_by_director, -> (director) { joins(:directors).where("directors.id = ?", director) }
-
   scope :filter_by_tag, -> (tag) { joins(:tags).where("tags.id = ?",tag) }
-
   scope :filter_by_year, -> (year) { where("year = ?", year) }
+  scope :owned, -> { where(is_owned: true) }
 
   def get_api_info
     return unless title && year
@@ -33,7 +32,8 @@ class Movie < ApplicationRecord
     response = HTTParty.get(url)
     movie_response = find_movie(response)
     return if movie_response.nil?
-    self.image_url = "https://image.tmdb.org/t/p/w500" + movie_response["poster_path"]
+    poster_path = movie_response["poster_path"]
+    self.image_url = "https://image.tmdb.org/t/p/w500" + poster_path if poster_path.present?
     self.title = movie_response["title"]
     self.description = movie_response["overview"]
     self.movie_api_id = movie_response["id"]
