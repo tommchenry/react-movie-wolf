@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   getDirectorMovies(director_id) {
-    this.fetch(`/api/movies?director=${director_id}`)
+    this.fetch(`/api/movies?director=${director_id}&sort=chrono`)
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})

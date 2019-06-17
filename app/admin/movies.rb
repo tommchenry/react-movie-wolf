@@ -16,7 +16,7 @@ ActiveAdmin.register Movie do
       movie.directors
     end
     column "Image" do |movie|
-      link_to image_tag(movie.image_url, height: 100), admin_movie_path(movie)
+      link_to image_tag(movie.image_url, height: 100), admin_movie_path(movie) if movie.image_url
     end
     column :is_owned
     column "Tags" do |movie|

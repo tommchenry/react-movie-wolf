@@ -3,11 +3,11 @@
 # Table name: movies
 #
 #  id           :bigint           not null, primary key
-#  description  :string
-#  image_url    :string
-#  is_owned     :boolean          default(FALSE)
 #  title        :string
 #  year         :integer
+#  is_owned     :boolean
+#  image_url    :string
+#  description  :string
 #  movie_api_id :integer
 #
 
@@ -26,11 +26,7 @@ class Movie < ApplicationRecord
   scope :owned, -> { where(is_owned: true) }
 
   def get_api_info
-    return unless title && year
-    search_query = URI::encode(title)
-    url = "https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&language=en-US&query=#{search_query}&page=1&include_adult=false&year=#{year}"
-    response = HTTParty.get(url)
-    movie_response = find_movie(response)
+    movie_response = movie_api_id ? get_movie_from_api_id : get_movie_from_title_and_year
     return if movie_response.nil?
     poster_path = movie_response["poster_path"]
     self.image_url = "https://image.tmdb.org/t/p/w500" + poster_path if poster_path.present?
@@ -53,6 +49,19 @@ class Movie < ApplicationRecord
   end
 
   private
+
+  def get_movie_from_api_id
+    url = "https://api.themoviedb.org/3/movie/#{movie_api_id}?api_key=#{api_key}&language=en-US"
+    HTTParty.get(url)
+  end
+
+  def get_movie_from_title_and_year
+    return unless title && year
+    search_query = URI::encode(title)
+    url = "https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&language=en-US&query=#{search_query}&page=1&include_adult=false&year=#{year}"
+    response = HTTParty.get(url)
+    find_movie(response)
+  end
 
   def create_director(crew)
     name = crew["name"]
