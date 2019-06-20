@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
-import { Container, Button, Image, Item, Label, Dimmer, Loader, Divider } from 'semantic-ui-react'
+import { Container, Button, Header, Image, Item, Label, Dimmer, Loader, Divider, Segment } from 'semantic-ui-react'
 
 class App extends Component {
   constructor () {
     super()
     this.state = {}
     this.getMovies = this.getMovies.bind(this)
+    this.getOwnedMovies = this.getOwnedMovies.bind(this)
     this.getMovie = this.getMovie.bind(this)
     this.getFilteredMovies = this.getFilteredMovies.bind(this)
     this.getDirectorMovies = this.getDirectorMovies.bind(this)
+    this.clearFilters = this.clearFilters.bind(this)
   }
 
   componentDidMount () {
-    this.getMovies()
+    this.getOwnedMovies()
   }
 
   fetch (endpoint) {
@@ -25,8 +27,10 @@ class App extends Component {
     this.fetch(`/api/movies?tag=${tag_id}`)
       .then(movies => {
         if (movies.length) {
+          this.setState({director: ""})
           this.setState({movies: movies})
         } else {
+          this.setState({director: ""})
           this.setState({movies: []})
         }
       })
@@ -37,18 +41,26 @@ class App extends Component {
       .then(movies => {
         if (movies.length) {
           this.setState({movies: movies})
+          this.getDirector(director_id)
         } else {
           this.setState({movies: []})
         }
       })
   }
 
+  getDirector (id) {
+    this.fetch(`/api/directors/${id}`)
+      .then(director => this.setState({director: director}))
+  }
+
   getYearMovies(year) {
     this.fetch(`/api/movies?year=${year}`)
       .then(movies => {
         if (movies.length) {
+          this.setState({director: ""})
           this.setState({movies: movies})
         } else {
+          this.setState({director: ""})
           this.setState({movies: []})
         }
       })
@@ -65,12 +77,32 @@ class App extends Component {
       })
   }
 
+  getOwnedMovies () {
+    this.fetch('/api/movies?owned=true')
+      .then(movies => {
+        if (movies.length) {
+          this.setState({director: ""})
+          this.setState({movies: movies})
+        } else {
+          this.setState({director: ""})
+          this.setState({movies: []})
+        }
+      })
+  }
+
+  clearFilters () {
+    this.setState({director: ""})
+    this.getOwnedMovies()
+  }
+
   getSortedMovies (sort) {
     this.fetch(`/api/movies?sort=${sort}`)
       .then(movies => {
         if (movies.length) {
+          this.setState({director: ""})
           this.setState({movies: movies})
         } else {
+          this.setState({director: ""})
           this.setState({movies: []})
         }
       })
@@ -82,7 +114,7 @@ class App extends Component {
   }
 
   render () {
-    let {movies} = this.state
+    let {movies, director} = this.state
     return movies
       ? <Container text>
         <Image src='https://s3.amazonaws.com/movie-wolf/MovieWolfLogo.png' size='medium' centered />
@@ -90,14 +122,35 @@ class App extends Component {
           <Button onClick={() => this.getMovies()}>Alphabetical</Button>
           <Button onClick={() => this.getSortedMovies("chrono")}>Chronological</Button>
           <Button onClick={() => this.getSortedMovies("chrono-rev")}>Reverse Chronological</Button>
-          <Button onClick={() => this.getMovies()}>Clear Filters</Button>
+          <Button onClick={() => this.clearFilters()}>Clear Filters</Button>
         </Button.Group>
         <Divider hidden section />
+        {director ? 
+          <div>
+          <Segment color="grey" inverted padded tertiary>
+          <Item.Group>
+          <Item>
+          <Item.Image src={director.image_url} />
+
+          <Item.Content>
+          <Item.Header as='a'>{director.name}</Item.Header>
+          <Item.Description>
+          {director.biography}
+          </Item.Description>
+          </Item.Content>
+          </Item>
+          </Item.Group>
+          </Segment>
+          <Header as='h1'>Films by {director.name}</Header>
+          <Divider section />
+          </div>
+          : ""
+        }
         {movies && movies.length
           ? <Item.Group divided>
             {Object.keys(movies).map((key) => {
               return <Item key={key}>
-                <Item.Image src={movies[key].image_url} />
+                <MovieImage image_url={movies[key].image_url} is_owned={movies[key].is_owned} />
                 <Item.Content>
                   <Item.Header>{movies[key].title}</Item.Header>
                   <Item.Meta>
@@ -137,6 +190,18 @@ class MovieDescription extends Component {
       <span>{this.props.description}</span>
       </Item.Description>
     );
+  }
+}
+
+class MovieImage extends Component {
+  render() {
+    if (this.props.is_owned) {
+      return(
+        <Item.Image src={this.props.image_url} label={{ as: 'a', corner: 'right', color: 'orange', icon: 'heart' }} />
+      );
+    } else {
+      return (<Item.Image src={this.props.image_url} />);
+    }
   }
 }
 

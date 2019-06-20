@@ -23,7 +23,7 @@ class Movie < ApplicationRecord
   scope :filter_by_director, -> (director) { joins(:directors).where("directors.id = ?", director) }
   scope :filter_by_tag, -> (tag) { joins(:tags).where("tags.id = ?",tag) }
   scope :filter_by_year, -> (year) { where("year = ?", year) }
-  scope :owned, -> { where(is_owned: true) }
+  scope :filter_by_owned, -> (value) { where("is_owned = ?", value) }
 
   def get_api_info
     movie_response = movie_api_id ? get_movie_from_api_id : get_movie_from_title_and_year
