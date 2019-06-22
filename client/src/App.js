@@ -11,6 +11,7 @@ class App extends Component {
     this.getFilteredMovies = this.getFilteredMovies.bind(this)
     this.getDirectorMovies = this.getDirectorMovies.bind(this)
     this.clearFilters = this.clearFilters.bind(this)
+    this.getSuggestedMovie = this.getSuggestedMovie.bind(this)
   }
 
   componentDidMount () {
@@ -27,10 +28,10 @@ class App extends Component {
     this.fetch(`/api/movies?tag=${tag_id}`)
       .then(movies => {
         if (movies.length) {
-          this.setState({director: ""})
+          this.setState({director: "", suggestedMovie: ""})
           this.setState({movies: movies})
         } else {
-          this.setState({director: ""})
+          this.setState({director: "", suggestedMovie: ""})
           this.setState({movies: []})
         }
       })
@@ -40,7 +41,7 @@ class App extends Component {
     this.fetch(`/api/movies?director=${director_id}&sort=chrono`)
       .then(movies => {
         if (movies.length) {
-          this.setState({movies: movies})
+          this.setState({movies: movies, suggestedMovie: ""})
           this.getDirector(director_id)
         } else {
           this.setState({movies: []})
@@ -48,7 +49,13 @@ class App extends Component {
       })
   }
 
+  getSuggestedMovie() {
+    this.fetch(`api/movies/suggest`)
+      .then(suggestedMovie => this.setState({suggestedMovie: suggestedMovie}))
+  }
+
   getDirector (id) {
+    this.setState({suggestedMovie: ""})
     this.fetch(`/api/directors/${id}`)
       .then(director => this.setState({director: director}))
   }
@@ -57,10 +64,10 @@ class App extends Component {
     this.fetch(`/api/movies?year=${year}`)
       .then(movies => {
         if (movies.length) {
-          this.setState({director: ""})
+          this.setState({director: "", suggestedMovie: ""})
           this.setState({movies: movies})
         } else {
-          this.setState({director: ""})
+          this.setState({director: "", suggestedMovie: ""})
           this.setState({movies: []})
         }
       })
@@ -81,17 +88,17 @@ class App extends Component {
     this.fetch('/api/movies?owned=true')
       .then(movies => {
         if (movies.length) {
-          this.setState({director: ""})
+          this.setState({director: "", suggestedMovie: ""})
           this.setState({movies: movies})
         } else {
-          this.setState({director: ""})
+          this.setState({director: "", suggestedMovie: ""})
           this.setState({movies: []})
         }
       })
   }
 
   clearFilters () {
-    this.setState({director: ""})
+    this.setState({director: "", suggestedMovie:""})
     this.getOwnedMovies()
   }
 
@@ -114,7 +121,7 @@ class App extends Component {
   }
 
   render () {
-    let {movies, director} = this.state
+    let {movies, director, suggestedMovie} = this.state
     return movies
       ? <Container text>
         <Image src='https://s3.amazonaws.com/movie-wolf/MovieWolfLogo.png' size='medium' centered />
@@ -122,9 +129,41 @@ class App extends Component {
           <Button onClick={() => this.getMovies()}>Alphabetical</Button>
           <Button onClick={() => this.getSortedMovies("chrono")}>Chronological</Button>
           <Button onClick={() => this.getSortedMovies("chrono-rev")}>Reverse Chronological</Button>
+          <Button onClick={() => this.getSuggestedMovie()}>Take It To The Wolf</Button>
           <Button onClick={() => this.clearFilters()}>Clear Filters</Button>
         </Button.Group>
         <Divider hidden section />
+        {suggestedMovie ?
+
+          <Segment color="grey" inverted padded tertiary>
+          <Header as='h1'>Awoo</Header>
+          <Item.Group>
+          <Item>
+                <MovieImage image_url={suggestedMovie.image_url} />
+                <Item.Content>
+                  <Item.Header>{suggestedMovie.title}</Item.Header>
+                  <Item.Meta>
+                    <Label onClick={() => this.getYearMovies(suggestedMovie.year)} as='a' color="orange">{suggestedMovie.year}</Label>
+                      {suggestedMovie.directors.length > 0 && 
+                        suggestedMovie.directors.map((director) => {
+                          return <Label onClick={() => this.getDirectorMovies(director.id)} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
+                        })
+                      }
+                  </Item.Meta>
+                <MovieDescription description={suggestedMovie.description} />
+                <Divider hidden section />
+                {suggestedMovie.tags.length > 0 && 
+                  suggestedMovie.tags.map((tag) => {
+                    return <Label onClick={() => this.getFilteredMovies(tag.id)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
+                  })
+                }
+                </Item.Content>
+          </Item>
+          </Item.Group>
+          </Segment>
+          :
+          ""
+        }
         {director ? 
           <div>
           <Segment color="grey" inverted padded tertiary>
