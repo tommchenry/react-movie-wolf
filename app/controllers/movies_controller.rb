@@ -12,6 +12,12 @@ class MoviesController < ApiController
     render json: @movie.to_json(:include => { :directors=> { :only => [:id, :name] }})
   end
 
+  # GET /movies/suggest
+  def suggest_movie
+    @suggested_movie = Movie.filter_by_owned(true).sample
+    render json: @suggested_movie.to_json(:include => {:tags => {:only => [:id, :name]}, :directors => {:only => [:id, :name]}}, :except => [:created_at, :updated_at])
+  end
+
   private
 
   def sorted_and_filtered_movies(params)
