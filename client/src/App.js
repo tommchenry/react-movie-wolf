@@ -96,7 +96,7 @@ class App extends Component {
   }
 
   getSortedMovies (sort) {
-    this.fetch(`/api/movies?sort=${sort}`)
+    this.fetch(`/api/movies?owned=true&sort=${sort}`)
       .then(movies => {
         if (movies.length) {
           this.setState({director: ""})
