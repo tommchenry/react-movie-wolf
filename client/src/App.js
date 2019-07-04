@@ -201,8 +201,8 @@ class App extends Component {
                       }
                   </Item.Meta>
                 <MovieDescription description={movies[key].description} />
-                <WishlistLink wishlist_link={movies[key].wishlist_link} is_owned={movies[key].is_owned} />
                 <StreamingLink streaming_link={movies[key].streaming_link} is_owned={movies[key].is_owned} />
+                <WishlistLink wishlist_link={movies[key].wishlist_link} is_owned={movies[key].is_owned} />
                 <Divider hidden section />
                 {movies[key].tags.length > 0 && 
                   movies[key].tags.map((tag) => {
