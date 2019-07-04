@@ -201,6 +201,7 @@ class App extends Component {
                       }
                   </Item.Meta>
                 <MovieDescription description={movies[key].description} />
+                <WishlistLink link="http://www.amazon.com" wishlist_link={movies[key].wishlist_link} is_owned={movies[key].is_owned} />
                 <Divider hidden section />
                 {movies[key].tags.length > 0 && 
                   movies[key].tags.map((tag) => {
@@ -240,6 +241,20 @@ class MovieImage extends Component {
       );
     } else {
       return (<Item.Image src={this.props.image_url} />);
+    }
+  }
+}
+
+class WishlistLink extends Component {
+  render() {
+    if (this.props.is_owned) {
+      return (
+        ""
+      )
+    } else {
+      return (
+        <Label as='a' color="yellow" href={this.props.wishlist_link} >Add to Wishlist</Label>
+      )
     }
   }
 }
