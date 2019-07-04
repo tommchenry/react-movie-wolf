@@ -52,6 +52,10 @@ class Movie < ApplicationRecord
     generate_wishlist_link
   end
 
+  def streaming_link
+    generate_streaming_link
+  end
+
   def as_json(options={})
     {
       id: self.id,
@@ -61,6 +65,7 @@ class Movie < ApplicationRecord
       image_url: self.image_url,
       description: self.description,
       wishlist_link: self.wishlist_link,
+      streaming_link: self.streaming_link,
     }.merge(:directors => directors.as_json)
       .merge(:tags => tags.as_json)
   end
@@ -100,5 +105,9 @@ class Movie < ApplicationRecord
 
   def generate_wishlist_link
     WishlistLink.new(title).generate
+  end
+
+  def generate_streaming_link
+    StreamingLink.new(title).generate
   end
 end

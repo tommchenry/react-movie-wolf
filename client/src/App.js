@@ -201,7 +201,8 @@ class App extends Component {
                       }
                   </Item.Meta>
                 <MovieDescription description={movies[key].description} />
-                <WishlistLink link="http://www.amazon.com" wishlist_link={movies[key].wishlist_link} is_owned={movies[key].is_owned} />
+                <StreamingLink streaming_link={movies[key].streaming_link} is_owned={movies[key].is_owned} />
+                <WishlistLink wishlist_link={movies[key].wishlist_link} is_owned={movies[key].is_owned} />
                 <Divider hidden section />
                 {movies[key].tags.length > 0 && 
                   movies[key].tags.map((tag) => {
@@ -254,6 +255,20 @@ class WishlistLink extends Component {
     } else {
       return (
         <Label as='a' color="yellow" href={this.props.wishlist_link} >Add to Wishlist</Label>
+      )
+    }
+  }
+}
+
+class StreamingLink extends Component {
+  render() {
+    if (this.props.is_owned) {
+      return (
+        ""
+      )
+    } else {
+      return (
+        <Label as='a' color="yellow" href={this.props.streaming_link} >Check Streaming Availability</Label>
       )
     }
   }
