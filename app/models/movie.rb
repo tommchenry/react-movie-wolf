@@ -48,6 +48,23 @@ class Movie < ApplicationRecord
     end
   end
 
+  def wishlist_link
+    generate_wishlist_link
+  end
+
+  def as_json(options={})
+    {
+      id: self.id,
+      title: self.title,
+      year: self.year,
+      is_owned: self.is_owned,
+      image_url: self.image_url,
+      description: self.description,
+      wishlist_link: self.wishlist_link,
+    }.merge(:directors => directors.as_json)
+      .merge(:tags => tags.as_json)
+  end
+
   private
 
   def get_movie_from_api_id
@@ -79,5 +96,9 @@ class Movie < ApplicationRecord
       result["release_date"][0..3] == year.to_s
     end
     results_by_year.first
+  end
+
+  def generate_wishlist_link
+    WishlistLink.new(title).generate
   end
 end
