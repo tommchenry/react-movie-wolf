@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Button, Header, Image, Item, Label, Dimmer, Loader, Divider, Segment } from 'semantic-ui-react'
+import { Container, Button, Image, Dimmer, Loader, Divider } from 'semantic-ui-react'
 import DirectorBox from './directorbox.js'
-import MovieCard from './moviecard.js'
 import SuggestedMovie from './suggestedmovie.js'
 import MovieList from './movielist.js'
 
@@ -64,7 +63,7 @@ class App extends Component {
       .then(director => this.setState({director: director}))
   }
 
-  getYearMovies(year) {
+  getYearMovies = year => {
     this.fetch(`/api/movies?year=${year}`)
       .then(movies => {
         if (movies.length) {
@@ -137,17 +136,9 @@ class App extends Component {
           <Button onClick={() => this.clearFilters()}>Clear Filters</Button>
         </Button.Group>
         <Divider hidden section />
-        <SuggestedMovie movie={suggestedMovie} />
+        <SuggestedMovie movie={suggestedMovie} getYearMovies={this.getYearMovies} />
         <DirectorBox director={director} />
-        <MovieList movies={movies} />
-        {movies && movies.length
-          ? <Item.Group divided>
-            {Object.keys(movies).map((key) => ( 
-              <MovieCard key={key} movie={movies[key]}/> 
-            ))}
-          </Item.Group>
-          : <Container textAlign='center'>No movies found.</Container>
-        }
+        <MovieList movies={movies} getYearMovies={this.getYearMovies} />
       </Container>
       : <Container text>
         <Dimmer active inverted>

@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
-import { Container, Button, Header, Image, Item, Label, Dimmer, Loader, Divider, Segment } from 'semantic-ui-react'
+import { Item, Label, Divider } from 'semantic-ui-react'
 
 class MovieCard extends Component {
+  getYearMoviesClick = () => {
+    this.props.getYearMovies(this.props.movie.year);
+  }
+
   render() {
     const key = this.props.key
     const movie = this.props.movie
-              return (
+    return (
       <Item key={key}>
                 <MovieImage image_url={movie.image_url} is_owned={movie.is_owned} />
                 <Item.Content>
                   <Item.Header>{movie.title}</Item.Header>
                   <Item.Meta>
-                    <Label onClick={() => this.getYearMovies(movie.year)} as='a' color="orange">{movie.year}</Label>
+                    <Label onClick={this.getYearMoviesClick} as='a' color="orange">{movie.year}</Label>
                       {movie.directors.length > 0 && 
                         movie.directors.map((director) => {
                           return <Label onClick={() => this.getDirectorMovies(director.id)} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
