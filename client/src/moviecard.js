@@ -6,6 +6,13 @@ class MovieCard extends Component {
     this.props.getYearMovies(this.props.movie.year);
   }
 
+  getDirectorMoviesClick = director => {
+    this.props.getDirectorMovies(director.id);
+  }
+
+  renderDirectorButton = director => 
+    <Label onClick={this.getDirectorMoviesClick} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
+
   render() {
     const key = this.props.key
     const movie = this.props.movie
@@ -16,11 +23,7 @@ class MovieCard extends Component {
                   <Item.Header>{movie.title}</Item.Header>
                   <Item.Meta>
                     <Label onClick={this.getYearMoviesClick} as='a' color="orange">{movie.year}</Label>
-                      {movie.directors.length > 0 && 
-                        movie.directors.map((director) => {
-                          return <Label onClick={() => this.getDirectorMovies(director.id)} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
-                        })
-                      }
+                    {movie.directors.map(this.renderDirectorButton)}
                   </Item.Meta>
                 <MovieDescription description={movie.description} />
                 <StreamingLink streaming_link={movie.streaming_link} is_owned={movie.is_owned} />
@@ -36,6 +39,7 @@ class MovieCard extends Component {
               )
   }
 }
+
 
 class MovieImage extends Component {
   render() {

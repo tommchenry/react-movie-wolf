@@ -12,7 +12,6 @@ class App extends Component {
     this.getOwnedMovies = this.getOwnedMovies.bind(this)
     this.getMovie = this.getMovie.bind(this)
     this.getFilteredMovies = this.getFilteredMovies.bind(this)
-    this.getDirectorMovies = this.getDirectorMovies.bind(this)
     this.clearFilters = this.clearFilters.bind(this)
     this.getSuggestedMovie = this.getSuggestedMovie.bind(this)
   }
@@ -40,7 +39,7 @@ class App extends Component {
       })
   }
 
-  getDirectorMovies(director_id) {
+  getDirectorMovies = director_id => {
     this.fetch(`/api/movies?director=${director_id}&sort=chrono`)
       .then(movies => {
         if (movies.length) {
@@ -136,9 +135,9 @@ class App extends Component {
           <Button onClick={() => this.clearFilters()}>Clear Filters</Button>
         </Button.Group>
         <Divider hidden section />
-        <SuggestedMovie movie={suggestedMovie} getYearMovies={this.getYearMovies} />
+        <SuggestedMovie movie={suggestedMovie} getYearMovies={this.getYearMovies} getDirectorMovies={this.getDirectorMovies}/>
         <DirectorBox director={director} />
-        <MovieList movies={movies} getYearMovies={this.getYearMovies} />
+        <MovieList movies={movies} getYearMovies={this.getYearMovies} getDirectorMovies={this.getDirectorMovies} />
       </Container>
       : <Container text>
         <Dimmer active inverted>

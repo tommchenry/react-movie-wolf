@@ -6,6 +6,8 @@ class SuggestedMovie extends Component {
   render() {
     const suggestedMovie = this.props.movie
     const getYearMovies = this.props.getYearMovies
+    const getDirectorMovies = this.props.getDirectorMovies
+
     if (suggestedMovie) {
       return (
         <Segment color="grey" inverted padded tertiary>
