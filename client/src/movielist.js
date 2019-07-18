@@ -7,12 +7,13 @@ class MovieList extends Component {
     const movies = this.props.movies
     const getYearMovies = this.props.getYearMovies
     const getDirectorMovies = this.props.getDirectorMovies
+    const getFilteredMovies = this.props.getFilteredMovies
 
     if (movies && movies.length) {
       return (
         <Item.Group divided>
         {Object.keys(movies).map((key) => ( 
-          <MovieCard key={key} movie={movies[key]} getYearMovies={getYearMovies} getDirectorMovies={getDirectorMovies} /> 
+          <MovieCard key={key} movie={movies[key]} getYearMovies={getYearMovies} getDirectorMovies={getDirectorMovies} getFilteredMovies={getFilteredMovies} /> 
         ))}
         </Item.Group>
       )

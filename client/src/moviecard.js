@@ -9,6 +9,7 @@ class MovieCard extends Component {
   render() {
     const movie = this.props.movie
     const getDirectorMovies = this.props.getDirectorMovies
+    const getFilteredMovies = this.props.getFilteredMovies
 
     return (
       <Item>
@@ -25,17 +26,26 @@ class MovieCard extends Component {
                 <StreamingLink streaming_link={movie.streaming_link} is_owned={movie.is_owned} />
                 <WishlistLink wishlist_link={movie.wishlist_link} is_owned={movie.is_owned} />
                 <Divider hidden section />
-                {movie.tags.length > 0 &&
-                  movie.tags.map((tag) => {
-                    return <Label onClick={() => this.getFilteredMovies(tag.id)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
-                  })
-                }
+                {Object.keys(movie.tags).map((key) => (
+                  <MovieTag key={key} tag={movie.tags[key]} getFilteredMovies={getFilteredMovies} />
+                ))}
                 </Item.Content>
                 </Item>
               )
   }
 }
 
+class MovieTag extends Component {
+  getFilteredMoviesClick = () => {
+    this.props.getFilteredMovies(this.props.tag.id);
+  }
+
+  render() {
+    return(
+      <Label onClick={this.getFilteredMoviesClick} as='a' color="red" tag>{this.props.tag.name}</Label>
+    )
+  }
+}
 
 class MovieImage extends Component {
   render() {

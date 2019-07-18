@@ -7,13 +7,14 @@ class SuggestedMovie extends Component {
     const suggestedMovie = this.props.movie
     const getYearMovies = this.props.getYearMovies
     const getDirectorMovies = this.props.getDirectorMovies
+    const getFilteredMovies = this.props.getFilteredMovies
 
     if (suggestedMovie) {
       return (
         <Segment color="grey" inverted padded tertiary>
           <Header as='h1'>Awoo</Header>
           <Item.Group>
-            <MovieCard movie={suggestedMovie} getYearMovies={getYearMovies}getDirectorMovies={getDirectorMovies} />
+            <MovieCard movie={suggestedMovie} getYearMovies={getYearMovies}getDirectorMovies={getDirectorMovies} getFilteredMovies={getFilteredMovies}/>
           </Item.Group>
         </Segment>
       )
