@@ -7,12 +7,11 @@ class MovieCard extends Component {
   }
 
   render() {
-    const key = this.props.key
     const movie = this.props.movie
     const getDirectorMovies = this.props.getDirectorMovies
 
     return (
-      <Item key={key}>
+      <Item>
                 <MovieImage image_url={movie.image_url} is_owned={movie.is_owned} />
                 <Item.Content>
                   <Item.Header>{movie.title}</Item.Header>
@@ -67,7 +66,7 @@ class DirectorButton extends Component {
 
   render() {
     return(
-    <Label onClick={this.getDirectorMoviesClick} key={this.props.director.id.toString()} as='a' color="orange">{this.props.director.name}</Label>
+    <Label onClick={this.getDirectorMoviesClick} as='a' color="orange">{this.props.director.name}</Label>
     );
   }
 }
