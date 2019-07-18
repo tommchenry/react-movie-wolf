@@ -6,16 +6,11 @@ class MovieCard extends Component {
     this.props.getYearMovies(this.props.movie.year);
   }
 
-  getDirectorMoviesClick = director => {
-    this.props.getDirectorMovies(director.id);
-  }
-
-  renderDirectorButton = director => 
-    <Label onClick={this.getDirectorMoviesClick} key={director.id.toString()} as='a' color="orange">{director.name}</Label>
-
   render() {
     const key = this.props.key
     const movie = this.props.movie
+    const getDirectorMovies = this.props.getDirectorMovies
+
     return (
       <Item key={key}>
                 <MovieImage image_url={movie.image_url} is_owned={movie.is_owned} />
@@ -23,13 +18,15 @@ class MovieCard extends Component {
                   <Item.Header>{movie.title}</Item.Header>
                   <Item.Meta>
                     <Label onClick={this.getYearMoviesClick} as='a' color="orange">{movie.year}</Label>
-                    {movie.directors.map(this.renderDirectorButton)}
+                  {Object.keys(movie.directors).map((key) => (
+                    <DirectorButton key={key} director={movie.directors[key]} getDirectorMovies={getDirectorMovies} />
+                  ))}
                   </Item.Meta>
                 <MovieDescription description={movie.description} />
                 <StreamingLink streaming_link={movie.streaming_link} is_owned={movie.is_owned} />
                 <WishlistLink wishlist_link={movie.wishlist_link} is_owned={movie.is_owned} />
                 <Divider hidden section />
-                {movie.tags.length > 0 && 
+                {movie.tags.length > 0 &&
                   movie.tags.map((tag) => {
                     return <Label onClick={() => this.getFilteredMovies(tag.id)} key={tag.id.toString()} as='a' color="red" tag>{tag.name}</Label>
                   })
@@ -59,6 +56,18 @@ class MovieDescription extends Component {
       <Item.Description>
       <span>{this.props.description}</span>
       </Item.Description>
+    );
+  }
+}
+
+class DirectorButton extends Component {
+  getDirectorMoviesClick = () => {
+    this.props.getDirectorMovies(this.props.director.id);
+  }
+
+  render() {
+    return(
+    <Label onClick={this.getDirectorMoviesClick} key={this.props.director.id.toString()} as='a' color="orange">{this.props.director.name}</Label>
     );
   }
 }

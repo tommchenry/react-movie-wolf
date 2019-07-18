@@ -13,7 +13,7 @@ class SuggestedMovie extends Component {
         <Segment color="grey" inverted padded tertiary>
           <Header as='h1'>Awoo</Header>
           <Item.Group>
-            <MovieCard movie={suggestedMovie} getYearMovies={getYearMovies} />
+            <MovieCard movie={suggestedMovie} getYearMovies={getYearMovies}getDirectorMovies={getDirectorMovies} />
           </Item.Group>
         </Segment>
       )
