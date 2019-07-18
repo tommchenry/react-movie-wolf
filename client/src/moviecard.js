@@ -13,25 +13,25 @@ class MovieCard extends Component {
 
     return (
       <Item>
-                <MovieImage image_url={movie.image_url} is_owned={movie.is_owned} />
-                <Item.Content>
-                  <Item.Header>{movie.title}</Item.Header>
-                  <Item.Meta>
-                    <Label onClick={this.getYearMoviesClick} as='a' color="orange">{movie.year}</Label>
-                  {Object.keys(movie.directors).map((key) => (
-                    <DirectorButton key={key} director={movie.directors[key]} getDirectorMovies={getDirectorMovies} />
-                  ))}
-                  </Item.Meta>
-                <MovieDescription description={movie.description} />
-                <StreamingLink streaming_link={movie.streaming_link} is_owned={movie.is_owned} />
-                <WishlistLink wishlist_link={movie.wishlist_link} is_owned={movie.is_owned} />
-                <Divider hidden section />
-                {Object.keys(movie.tags).map((key) => (
-                  <MovieTag key={key} tag={movie.tags[key]} getFilteredMovies={getFilteredMovies} />
-                ))}
-                </Item.Content>
-                </Item>
-              )
+        <MovieImage image_url={movie.image_url} is_owned={movie.is_owned} />
+        <Item.Content>
+          <Item.Header>{movie.title}</Item.Header>
+          <Item.Meta>
+            <Label onClick={this.getYearMoviesClick} as='a' color="orange">{movie.year}</Label>
+            {Object.keys(movie.directors).map((key) => (
+              <DirectorButton key={key} director={movie.directors[key]} getDirectorMovies={getDirectorMovies} />
+            ))}
+            </Item.Meta>
+          <MovieDescription description={movie.description} />
+          <StreamingLink streaming_link={movie.streaming_link} is_owned={movie.is_owned} />
+          <WishlistLink wishlist_link={movie.wishlist_link} is_owned={movie.is_owned} />
+          <Divider hidden section />
+          {Object.keys(movie.tags).map((key) => (
+            <MovieTag key={key} tag={movie.tags[key]} getFilteredMovies={getFilteredMovies} />
+          ))}
+        </Item.Content>
+      </Item>
+    )
   }
 }
 
