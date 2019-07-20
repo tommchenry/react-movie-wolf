@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Button, Image, Dimmer, Loader, Divider } from 'semantic-ui-react'
+import { Container,  Menu, Image, Dimmer, Loader, Divider } from 'semantic-ui-react'
 import DirectorBox from './directorbox.js'
 import SuggestedMovie from './suggestedmovie.js'
 import MovieList from './movielist.js'
@@ -126,13 +126,16 @@ class App extends Component {
     return movies
       ? <Container text>
         <Image src='https://s3.amazonaws.com/movie-wolf/MovieWolfLogo.png' size='medium' centered />
-        <Button.Group color='red' fluid>
-          <Button onClick={() => this.getMovies()}>Alphabetical</Button>
-          <Button onClick={() => this.getSortedMovies("chrono")}>Chronological</Button>
-          <Button onClick={() => this.getSortedMovies("chrono-rev")}>Reverse Chronological</Button>
-          <Button onClick={() => this.getSuggestedMovie()}>Take It To The Wolf</Button>
-          <Button onClick={() => this.clearFilters()}>Clear Filters</Button>
-        </Button.Group>
+        <Container>
+        <Divider hidden section />
+        <Menu color='red' inverted stackable>
+          <Menu.Item onClick={() => this.getMovies()}>Alphabetical</Menu.Item>
+          <Menu.Item onClick={() => this.getSortedMovies("chrono")}>Chronological</Menu.Item>
+          <Menu.Item onClick={() => this.getSortedMovies("chrono-rev")}>Reverse Chronological</Menu.Item>
+          <Menu.Item onClick={() => this.getSuggestedMovie()}>Take It To The Wolf</Menu.Item>
+          <Menu.Item onClick={() => this.clearFilters()}>Clear Filters</Menu.Item>
+        </Menu>
+        </Container>
         <Divider hidden section />
         <SuggestedMovie movie={suggestedMovie} getYearMovies={this.getYearMovies} getDirectorMovies={this.getDirectorMovies} getFilteredMovies={this.getFilteredMovies} />
         <DirectorBox director={director} />

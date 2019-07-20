@@ -11,9 +11,9 @@ class MovieList extends Component {
 
     if (movies && movies.length) {
       return (
-        <Item.Group divided>
-          {Object.keys(movies).map((key) => ( 
-            <MovieCard key={key} movie={movies[key]} getYearMovies={getYearMovies} getDirectorMovies={getDirectorMovies} getFilteredMovies={getFilteredMovies} /> 
+        <Item.Group divided unstackable>
+          {Object.keys(movies).map((key) => (
+            <MovieCard key={key} movie={movies[key]} getYearMovies={getYearMovies} getDirectorMovies={getDirectorMovies} getFilteredMovies={getFilteredMovies} />
           ))}
         </Item.Group>
       )
