@@ -7,20 +7,20 @@ class MovieList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filtered_movies: []
+      filteredMovies: []
     }
     this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
     this.setState({
-      filtered_movies: this.props.movies
+      filteredMovies: this.props.movies
     });
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      filtered_movies: nextProps.movies
+      filteredMovies: nextProps.movies
     });
   }
 
@@ -41,11 +41,12 @@ class MovieList extends Component {
     }
 
     this.setState({
-      filtered_movies: filteredList
+      filteredMovies: filteredList
     });
   }
+
   render() {
-    const movies = this.state.filtered_movies
+    const movies = this.state.filteredMovies
     const getYearMovies = this.props.getYearMovies
     const getDirectorMovies = this.props.getDirectorMovies
     const getFilteredMovies = this.props.getFilteredMovies
