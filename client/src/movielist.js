@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Item, Input } from 'semantic-ui-react'
+import { Container, Divider, Item, Input } from 'semantic-ui-react'
 import MovieCard from './moviecard.js'
 
 class MovieList extends Component {
@@ -62,7 +62,11 @@ class MovieList extends Component {
       )
     } else {
       return (
-        <Container textAlign='center'>No movies found.</Container>
+        <Item.Group divided unstackable>
+          <Input fluid icon='search' onChange={this.handleChange} placeholder='Search...' />
+          <Divider hidden section />
+          <Container textAlign='center'>No movies found.</Container>
+        </Item.Group>
       )
     }
   }
