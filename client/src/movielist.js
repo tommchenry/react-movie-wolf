@@ -62,6 +62,7 @@ class MovieList extends Component {
       )
     } else {
       return (
+          <Input fluid icon='search' onChange={this.handleChange} placeholder='Search...' />
         <Container textAlign='center'>No movies found.</Container>
       )
     }
